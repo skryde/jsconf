@@ -38,7 +38,7 @@ func main() {
 	var c configuration
 
 	if res, err := jsconf.Exist(configFile); err == nil && res == jsconf.IsFile {
-		erro := jsconf.LoadFromFile(configFile, c)
+		erro := jsconf.LoadFromFile(configFile, &c)
 		if erro != nil {
 			panic(erro)
 		}
@@ -63,3 +63,9 @@ func main() {
 }
 
 ```
+
+---
+
+### TODO
+
+* Change Exist function to return more exact results (and not just an error)
