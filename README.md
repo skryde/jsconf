@@ -37,15 +37,13 @@ type configuration struct {
 func main() {
 	var c configuration
 
-	if res, err := jsconf.Exist(configFile); err == nil && res == jsconf.IsFile {
-		erro := jsconf.LoadFromFile(configFile, &c)
-		if erro != nil {
-			panic(erro)
+	if res := jsconf.Exist(configFile); res == jsconf.IsFile {
+		err := jsconf.LoadFromFile(configFile, &c)
+		if err != nil {
+			panic(err)
 		}
 
-		fmt.Println(c)
-
-	} else if res == jsconf.Error {
+	} else if res == jsconf.NotExist {
 		c.Port = 8080
 		c.LogFile = "app.log"
 		c.Database.Host = "127.0.0.1"
@@ -53,19 +51,15 @@ func main() {
 		c.Database.User = "usuario"
 		c.Database.Pass = "secret"
 
-		erro := jsconf.SaveToFile(configFile, c)
-		if erro != nil {
-			panic(erro)
+		err := jsconf.SaveToFile(configFile, c)
+		if err != nil {
+			panic(err)
 		}
 
-		fmt.Println(c)
+
 	}
+
+	fmt.Println(c)
 }
 
 ```
-
----
-
-### TODO
-
-* Change Exist function to return more exact results (and not just an error)

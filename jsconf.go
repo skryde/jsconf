@@ -12,29 +12,32 @@ import (
 type ExistResult int
 
 const (
-	// Error represent an error in os.Stat().
-	Error ExistResult = 1
+	// NotExist if 'fileName' not exist.
+	NotExist ExistResult = iota
 
 	// IsDir if 'fileName' is a directory.
-	IsDir ExistResult = 2
+	IsDir
 
 	// IsFile 'fileName' is a file.
-	IsFile ExistResult = 3
+	IsFile
+
+	// Error represent an error in os.Stat().
+	Error
 )
 
 // Exist return an ExistResult value depending on the 'fileName' Stat().
-func Exist(fileName string) (ExistResult, error) {
+func Exist(fileName string) ExistResult {
 	finfo, err := os.Stat(fileName)
 
 	if err != nil {
-		return Error, err
+		if os.IsNotExist(err) { return NotExist } else { return Error }
 	}
 
 	if finfo.IsDir() {
-		return IsDir, nil
+		return IsDir
 	}
 
-	return IsFile, nil
+	return IsFile
 }
 
 // SaveToFile saves the 'data' received (an struct or map) in the file 'fileName'
