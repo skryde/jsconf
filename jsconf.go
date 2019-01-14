@@ -2,10 +2,10 @@ package jsconf
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 	"reflect"
-	"errors"
 )
 
 // ExistResult represent the result of the function Exist.
